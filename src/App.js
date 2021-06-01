@@ -7,39 +7,34 @@ function App() {
 
   useEffect(() => {
     axios
-      .get('https://api-v3.mbta.com/schedules?filter%5Broute%5D=filter%5B0%2C1%2C2%5D')
+      .get('https://api-v3.mbta.com/predictions?filter%5Broute%5D=filter%5B0%2C1%2C2%5D')
       .then(res => {
-        console.log(res.data)
-        setSchedule(res.data)
+        console.log(res.data.data)
+        setSchedule(res.data.data)
       })
       .catch(err => console.log(err))
   }, [])
 
-  // const scheduleArr = Object.keys(schedule);
-  // console.log(scheduleArr)
-  // const arr = Object.keys(scheduleArr)
-  // console.log(arr)
+  console.log(schedule)
 
-  const mappedSchedule = schedule.data.map((schedules, index) => {
-    console.log(schedules)
-    return (
-      <div key={index}>
-        <div>{schedules}</div>
+  const mappedSchedule = schedule.map((schedules, index) => {
+    // console.log(schedules.attributes)
+    if (index <= 10) {
+      return (
+        <div key={index}>
+        <div>{schedules.attributes.departure_time}</div>
       </div>
     )
+    }
   })
 
-  console.log(mappedSchedule)
+  // console.log(mappedSchedule)
 
-  // .data[0].attributes.departure_time
-
-  // route.data[attributes].departure_time
-  // curl -X GET "https://api-v3.mbta.com/schedules?sort=departure_time&include=prediction&filter%5Bdate%5D=filter%5B2021-05-28&filter%5Broute_type%5D=1" -H "accept: application/vnd.api+json"
-  // https://api-v3.mbta.com
   return (
     <div className="App">
-      Hello
-      {mappedSchedule}
+      <div>
+        {mappedSchedule}
+      </div>
     </div>
   );
 }
